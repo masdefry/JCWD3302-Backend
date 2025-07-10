@@ -1,7 +1,13 @@
 {
-  "products": [
-    { "name": "Kaos Polos 30s", "price": 100000, "stocks": 199 },
-    { "name": "Celana Jeans", "price": 300000, "stocks": 99 },
-    { "name": "Dompet Pria", "price": 200000, "stocks": 50 }
+  "users": [
+    {}
+  ], 
+
+  "routes": [
+    {}
+  ],
+
+  "transactions": [
+    {}
   ]
 }
