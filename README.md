@@ -1,37 +1,50 @@
 Hello, Students! 👋
 
-⌨️ How to Setup Express Typescript?
+🧑‍💻 How to Setup Express Typescript & MySql?
 
-        1. Create New Directory for Express Typescript Projects
+                1. Create New Directory for ExpressTS Projects
 
-        2. Inside New Directory, Execute this Command:
+                2. Inside New Directory, Execute this Command:
 
-                npm init --yes
+                        npm init --yes
 
-        3. Install Express Typescript
+                3. Install Express Typescript & RDBMS (MySql/Postgresql)
 
-                npm i express @types/express @types/node
+                        mysql > npm i express mysql2 @types/express @types/node
 
-                npm i -D typescript concurrently nodemon
+                                npm i -D typescript ts-node nodemon
 
-        4. Initiate Typescript Configuration
+                        posgresql > npm i express pg @types/express @types/node
 
-                npx tsc --init
-  
-        5. Edit `tsconfig.json`:
-                
-                - Uncomment rootDir:  "rootDir": "./src"
-                
-                - Uncomment outDir:   "outDir": "./dist"
-        
-        6. Replace Property `scripts` on `package.json` with this Code:
-    
-                "scripts": {
-                        "build": "npx tsc",
-                        "start": "node dist/index.js",
-                        "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\""
-                },
+                                        npm i @types/pg --save-dev
 
-        7. Running Express Typescript Projects
-  
-                npm run dev
+                4. Initiate Typescript Configuration
+
+                        npx tsc --init
+
+                5. Edit `tsconfig.json`:
+
+                        - Uncomment rootDir:  "rootDir": "./src"
+
+                        - Uncomment outDir:   "outDir": "./dist"
+
+                6. Replace Property `scripts` on `package.json` with this Code:
+
+                        "scripts": {
+                                "dev": "nodemon",
+                                "build": "tsc",
+                                "start": "node dist/index.js",
+                        }
+
+                7. Create New File with Name `nodemon.json` and Add this Configuration:
+
+                        {
+                                "watch": ["src"],
+                                "ext": "ts",
+                                "ignore": ["dist"],
+                                "exec": "ts-node src/index.ts"
+                        }
+
+                8. Running Express Typescript Projects
+
+                        npm run dev
