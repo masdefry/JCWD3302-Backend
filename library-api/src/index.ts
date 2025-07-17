@@ -1,5 +1,6 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express, Request, Response, NextFunction } from 'express';
 import pool from './db/connection';
+import mainRouter from './routers/index.router';
 
 const app: Express = express();
 app.use(express.json());
@@ -12,9 +13,19 @@ app.get('/', (req: Request, res: Response) => {
 pool.connect((err, client, release) => {
   if (err) return console.log(`Error acquiring client ${err.stack}`);
 
-  console.log('Connection successful');
+  console.log('🔌[database]: Connection successful at postgresql database');
 
   release();
+});
+
+app.use(mainRouter);
+
+// Centralized Error
+app.use((error: any, req: Request, res: Response, next: NextFunction) => {
+  res.status(500).json({
+    success: false, 
+    message: error?.message
+  })
 });
 
 app.listen(port, () => {
