@@ -1,20 +1,14 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
-import prisma from './db/connection';
+import mainRouter from './routers/index.router';
 
 const app: Express = express();
 app.use(express.json());
 const port = 3001;
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('<h1>Welcome to Express Typescript Server</h1>');
-});
-
-app.get('/api/users', async (req: Request, res: Response) => {
-  await prisma.user.findMany();
-});
+app.use(mainRouter);
 
 // Centralized Error
-app.use((error: any, req: Request, res: Response, next: NextFunction) => {
+app.use((error: any, _: Request, res: Response, __: NextFunction) => {
   res.status(500).json({
     success: false,
     message: error?.message,

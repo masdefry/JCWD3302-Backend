@@ -1,5 +1,5 @@
 {
-  "name": "intro-orm",
+  "name": "hr-api",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,19 +8,24 @@
     "build": "tsc",
     "start": "node dist/index.js"
   },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^6.12.0",
+    "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.3",
-    "@types/node": "^24.0.14",
+    "bcrypt": "^6.0.0",
     "date-fns": "^4.1.0",
     "express": "^5.1.0",
     "express-validator": "^7.2.1",
     "pg": "^8.16.3"
   },
   "devDependencies": {
+    "@types/node": "^24.0.15",
     "@types/pg": "^8.15.4",
     "nodemon": "^3.1.10",
     "prisma": "^6.12.0",

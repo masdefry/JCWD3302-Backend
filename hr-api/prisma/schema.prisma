@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Employee {
+  id            String     @id @default(uuid())
+  name          String
+  email         String     @unique
+  password      String
+  phoneNumber   String
+  salary        String
+  leaveBalance  Int
+  role          Role
+  shift         Shift      @relation(fields: [shiftId], references: [id])
+  shiftId       Int
+  leavesRequested   Leave[] @relation("LeaveRequested")
+  leavesApproved    Leave[] @relation("LeaveApproved")
+  attendances    Attendance[]
+}
+
+model Shift {
+  id         Int        @id @default(autoincrement())
+  shiftStart String
+  shiftEnd   String
+  employees  Employee[]
+}
+
+model Leave {
+  id                  Int        @id @default(autoincrement())
+  startDate           DateTime
+  endDate             DateTime
+  status              Status
+  employeeReq         Employee   @relation("LeaveRequested", fields: [employeeReqId], references: [id])
+  employeeReqId       String
+  employeeApproval    Employee   @relation("LeaveApproved", fields: [employeeApprovalId], references: [id])
+  employeeApprovalId  String
+  leaveType           LeaveType  @relation(fields: [leaveTypeId], references: [id])
+  leaveTypeId         Int
+  description         String
+}
+
+model LeaveType {
+  id     Int     @id @default(autoincrement())
+  name   String
+  leaves Leave[]
+}
+
+model Attendance {
+  id          Int      @id @default(autoincrement())
+  clockIn     DateTime
+  clockOut    DateTime
+  deduction   Int
+  employee    Employee @relation(fields: [employeeId], references: [id])
+  employeeId  String
+}
+
+enum Role {
+  HR
+  MANAGER
+  STAFF
+}
+
+enum Status {
+  WAITING_FOR_APPROVAL
+  APPROVED
+  REJECTED
+}
