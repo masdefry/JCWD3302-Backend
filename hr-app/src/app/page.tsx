@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { LiaClipboardListSolid } from 'react-icons/lia';
 import { PiUserCirclePlusDuotone } from 'react-icons/pi';
 import { PiClockCountdownDuotone } from 'react-icons/pi';
@@ -27,22 +28,28 @@ export default function Home() {
       {/* Menu */}
       <div className='p-4 bg-white rounded-md mt-3'>
         <div className='grid grid-cols-4 gap-5'>
-          <div className='col-span-1 space-y-2 flex flex-col items-center'>
-            <LiaClipboardListSolid className='text-xl text-green-600' />
-            <h1 className='truncate text-xs font-bold'>Attendance</h1>
-          </div>
-          <div className='col-span-1 space-y-2 flex flex-col items-center'>
-            <PiUserCirclePlusDuotone className='text-xl text-red-600' />
-            <h1 className='text-xs break-words leading-tigh line-clamp-2 font-bold text-center'>
-              Register Employee
-            </h1>
-          </div>
-          <div className='col-span-1 space-y-2 flex flex-col items-center'>
-            <PiClockCountdownDuotone className='text-xl text-blue-600' />
-            <h1 className='text-xs break-words leading-tigh line-clamp-2 font-bold text-center'>
-              Request Time-Off
-            </h1>
-          </div>
+          <Link href='/attendance-log'>
+            <div className='col-span-1 space-y-2 flex flex-col items-center'>
+              <LiaClipboardListSolid className='text-xl text-green-600' />
+              <h1 className='truncate text-xs font-bold'>Attendance</h1>
+            </div>
+          </Link>
+          <Link href='/register-employee'>
+            <div className='col-span-1 space-y-2 flex flex-col items-center'>
+              <PiUserCirclePlusDuotone className='text-xl text-red-600' />
+              <h1 className='text-xs break-words leading-tigh line-clamp-2 font-bold text-center'>
+                Register Employee
+              </h1>
+            </div>
+          </Link>
+          <Link href='/time-off'>
+            <div className='col-span-1 space-y-2 flex flex-col items-center'>
+              <PiClockCountdownDuotone className='text-xl text-blue-600' />
+              <h1 className='text-xs break-words leading-tigh line-clamp-2 font-bold text-center'>
+                Request Time-Off
+              </h1>
+            </div>
+          </Link>
           <div className='col-span-1 space-y-2 flex flex-col items-center'>
             <RiFileList3Line className='text-xl text-blue-600' />
             <h1 className='text-xs break-words leading-tigh line-clamp-2 font-bold text-center'>

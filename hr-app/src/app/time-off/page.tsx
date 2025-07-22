@@ -3,15 +3,13 @@ import { LuMoveLeft } from 'react-icons/lu';
 import { useState } from 'react';
 import { DayPicker } from 'react-day-picker';
 import { BsArrowRightCircle } from 'react-icons/bs';
+import HeaderTitle from '@/components/HeaderTitle';
+import Link from 'next/link';
 export default function Page() {
   const [date, setDate] = useState<Date | undefined>();
   return (
     <>
-      {/* Header Title */}
-      <div className='flex items-center bg-green-500 text-white p-4'>
-        <LuMoveLeft />
-        <h1 className='mx-auto font-bold'>Time Off</h1>
-      </div>
+      <HeaderTitle title='Time Off' />
 
       <div className='p-4'>
         <div className='border border-gray-300 bg-gray-200 rounded-md flex flex-col items-center py-1'>
@@ -74,9 +72,11 @@ export default function Page() {
       </div>
 
       <div className='px-4 py-3 w-full border-gray-200 fixed bottom-0 left-0 right-0 max-w-md mx-auto'>
-        <button className='btn bg-green-500  hover:bg-green-600 text-white w-full'>
-          Request Time Off
-        </button>
+        <Link href='/time-off/request'>
+          <button className='btn bg-green-500  hover:bg-green-600 text-white w-full'>
+            Request Time Off
+          </button>
+        </Link>
       </div>
     </>
   );

@@ -13,7 +13,6 @@ export const createEmployeeService = async ({
   shiftId,
 }: Omit<Employee, 'id' | 'leaveBalance'>) => {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-    console.log(hashedPassword);
 
     await prisma.employee.create({
         data: {
