@@ -1,20 +1,17 @@
 'use client';
 import { LuMoveLeft } from 'react-icons/lu';
-import { PiClockCountdownDuotone } from "react-icons/pi";
+import { PiClockCountdownDuotone } from 'react-icons/pi';
 import { useState } from 'react';
 import { DayPicker } from 'react-day-picker';
-import { IoCalendarOutline } from "react-icons/io5";
-import { PiListPlusDuotone } from "react-icons/pi";
+import { IoCalendarOutline } from 'react-icons/io5';
+import { PiListPlusDuotone } from 'react-icons/pi';
+import HeaderTitle from '@/components/HeaderTitle';
 export default function Page() {
   const [date, setDate] = useState<Date | undefined>();
 
   return (
     <>
-      {/* Header Title */}
-      <div className='flex items-center bg-green-500 text-white p-4'>
-        <LuMoveLeft />
-        <h1 className='mx-auto font-bold'>Request Time Off</h1>
-      </div>
+      <HeaderTitle title='Request Time Off' />
 
       {/* Form Request Time Off */}
       <div className='px-4 py-2'>
@@ -52,7 +49,11 @@ export default function Page() {
         </div>
         <div className='flex items-center gap-2 py-2 border-b-1 border-gray-300'>
           <PiListPlusDuotone className='text-2xl text-gray-500' />
-          <input type='text' placeholder='Reason' className='input border-none text-gray-500 bg-gray-100' />
+          <input
+            type='text'
+            placeholder='Reason'
+            className='input border-none text-gray-500 bg-gray-100'
+          />
         </div>
       </div>
       <div className='px-4 py-3 w-full border-gray-200 fixed bottom-0 left-0 right-0 max-w-md mx-auto'>

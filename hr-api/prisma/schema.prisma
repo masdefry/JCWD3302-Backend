@@ -23,6 +23,7 @@ model Employee {
   phoneNumber   String
   salary        String
   leaveBalance  Int
+  isActive      Boolean    @default(false)
   role          Role
   shift         Shift      @relation(fields: [shiftId], references: [id])
   shiftId       Int
