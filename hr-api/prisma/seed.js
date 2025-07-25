@@ -18,14 +18,15 @@ const EmployeeHR = [
     salary: '8000000',
     leaveBalance: 12,
     role: 'HR',
+    isActive: true, 
     shiftId: 1
   },
 ];
 
 async function main() {
-  await prisma.shift.createMany({ data: Shifts });
+  // await prisma.shift.createMany({ data: Shifts });
 
-  // await prisma.employee.createMany({data: EmployeeHR});
+  await prisma.employee.createMany({data: EmployeeHR});
 }
 
 main()

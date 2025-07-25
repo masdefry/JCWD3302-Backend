@@ -61,7 +61,7 @@ export const authRegisterService = async ({
     10
   );
 
-  await prisma.employee.create({
+  const createdEmployee = await prisma.employee.create({
     data: {
       name,
       email,
@@ -74,12 +74,19 @@ export const authRegisterService = async ({
     },
   });
 
-  const templateHtml = fs.readFileSync('src/assets/template.html', 'utf-8');
+  const token = await createJwt({
+    userId: createdEmployee?.id,
+    secretKey: process.env.JWT_SECRET_KEY!,
+    options: {
+      expiresIn: '1h',
+    },
+  });
 
+  const templateHtml = fs.readFileSync('src/assets/template.html', 'utf-8');
   const compiledTemplateHtml = Handlebars.compile(templateHtml);
   const resultTemplateHtml = compiledTemplateHtml({
     name: name,
-    linkUrl: process.env.RESET_PASSWORD_URL,
+    linkUrl: `${process.env.RESET_PASSWORD_URL}/${token}`,
   });
 
   await transporter.sendMail({
@@ -87,5 +94,24 @@ export const authRegisterService = async ({
     sender: 'hrapp@gmail.com',
     to: email,
     html: resultTemplateHtml,
+  });
+};
+
+export const authSessionLoginService = async ({ id }: Pick<Employee, 'id'>) => {
+  const findEmployeeById = await prisma.employee.findUnique({ where: { id } });
+
+  if (!findEmployeeById)
+    throw APIError('Authentication session login failed', 400);
+
+  return { name: findEmployeeById?.name, role: findEmployeeById?.role };
+};
+
+export const updatePasswordService = async ({
+  password,
+  id,
+}: Pick<Employee, 'password' | 'id'>) => {
+  await prisma.employee.update({
+    data: { password, isActive: true },
+    where: { id },
   });
 };

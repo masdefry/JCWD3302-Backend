@@ -2,7 +2,7 @@ import jwt, { SignOptions } from 'jsonwebtoken';
 
 interface ICreateJwtProps {
   userId: string;
-  role: string;
+  role?: string;
   secretKey: string;
   options: SignOptions;
 }
