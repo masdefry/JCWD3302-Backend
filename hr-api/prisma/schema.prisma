@@ -79,3 +79,29 @@ enum Status {
   APPROVED
   REJECTED
 }
+
+model TimeOff{
+  id  Int @id @default(autoincrement())
+  timeOffType TimeOffType
+  reason String 
+  date  DateTime  @db.Date
+
+  timeoff_evidence TimeOffEvidence[]
+
+  @@map("timeoff")
+}
+
+enum TimeOffType{
+  IZIN_SAKIT
+  IZIN_MENIKAH
+  IZIN_MELAHIRKAN
+}
+
+model TimeOffEvidence{
+  id Int @id @default(autoincrement())
+  imageUrl String 
+  timeOffId Int 
+  timeoff TimeOff @relation(fields: [timeOffId], references: [id])
+
+  @@map("timeoff_evidence")
+}

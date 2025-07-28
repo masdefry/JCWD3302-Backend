@@ -23,6 +23,8 @@ export default function AuthProvider({
       name: res?.data?.data?.name,
       role: res?.data?.data?.role,
     });
+
+    console.log(res);
   };
 
   useEffect(() => {
