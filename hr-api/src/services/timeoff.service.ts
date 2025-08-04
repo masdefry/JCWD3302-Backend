@@ -3,7 +3,7 @@ import { TimeOff } from '../generated/prisma';
 import { cloudinaryUpload } from '../utils/cloudinary';
 
 interface ICreateRequestTimeOffServiceProps
-  extends Pick<TimeOff, 'timeOffType' | 'date' | 'reason'> {
+  extends Pick<TimeOff, 'timeOffType' | 'date' | 'reason' | 'requestById'> {
   files: Express.Multer.File[];
 }
 
@@ -12,6 +12,7 @@ export const createRequestTimeOffService = async ({
   date,
   reason,
   files,
+  requestById,
 }: ICreateRequestTimeOffServiceProps) => {
   return prisma.$transaction(async (tx) => {
     const createdTimeOff = await tx.timeOff.create({
@@ -19,6 +20,8 @@ export const createRequestTimeOffService = async ({
         timeOffType,
         date: new Date(date),
         reason,
+        requestById,
+        status: 'WAITING_FOR_APPROVAL',
       },
     });
 
@@ -35,8 +38,8 @@ export const createRequestTimeOffService = async ({
     */
 
     const cloudinaryUploaded = files?.map(async (file) => {
-      const res: any = await cloudinaryUpload(file?.buffer);
-      return { imageUrl: res?.res, timeOffId: createdTimeOff?.id };
+      const { secureUrl } = await cloudinaryUpload(file?.buffer);
+      return { imageUrl: secureUrl, timeOffId: createdTimeOff?.id };
     });
 
     const filesToCreate = await Promise.all(cloudinaryUploaded);

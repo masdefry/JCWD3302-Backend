@@ -28,7 +28,7 @@ export default function Page() {
         name: res?.data?.data?.name,
         role: res?.data?.data?.role,
       });
-
+      console.log('>>>');
       router.push('/');
       toast.success(res?.data?.message);
     } catch (error) {

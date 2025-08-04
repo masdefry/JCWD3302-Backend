@@ -32,10 +32,10 @@ export default function RootLayout({
       >
         <TanstackProvider>
           <AuthProvider>
-            <div className='max-w-md min-h-screen mx-auto bg-gray-100'>
-              <ToastContainer />
-              {children}
-            </div>
+          <div className='max-w-md min-h-screen mx-auto bg-gray-100'>
+            <ToastContainer />
+            {children}
+          </div>
           </AuthProvider>
         </TanstackProvider>
       </body>

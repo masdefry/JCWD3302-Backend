@@ -7,14 +7,25 @@ const useAuthStore = create(
       token: '',
       name: '',
       role: '',
+      hasHydrated: false,
 
       setAuth: ({ token, name, role }: any) =>
-        set({ token: token, name: name, role: role, isLogin: true }),
-      setSessionAuth: ({ name, role }: any) => set({ name: name, role: role }),
+        set({
+          token: token,
+          name: name,
+          role: role,
+          hasHydrated: true,
+        }),
+      setSessionAuth: ({ name, role }: any) =>
+        set({ name: name, role: role, hasHydrated: true }),
+      setHasHydrated: (state: boolean) => set({ hasHydrated: state }),
     }),
     {
       name: 'authToken',
       partialize: (state: any) => ({ token: state.token }),
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
     }
   )
 );

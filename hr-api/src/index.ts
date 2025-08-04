@@ -9,9 +9,7 @@ const port = 3002;
 
 app.use(mainRouter);
 
-// Centralized Error
 app.use((error: any, _: Request, res: Response, __: NextFunction) => {
-  console.log(error);
   res.status(error?.isExpose ? error?.statusCode : 500).json({
     success: false,
     message: error?.isExpose ? error?.message : 'Something went wrong',

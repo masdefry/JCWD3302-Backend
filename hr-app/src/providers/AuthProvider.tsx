@@ -1,39 +1,42 @@
 'use client';
 import axiosInstance from '@/utils/axiosInstance';
 import useAuthStore from '@/stores/authStore';
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 
 export default function AuthProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { token, setSessionAuth, name, role } = useAuthStore();
+  const { token, setSessionAuth, hasHydrated } = useAuthStore();
   const router = useRouter();
+  const pathname = usePathname();
 
   const onAuthSessionLogin = async () => {
-    const res = await axiosInstance.get('/api/auth/session-login', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    try {
+      if (!token) router.replace('/login');
 
-    setSessionAuth({
-      name: res?.data?.data?.name,
-      role: res?.data?.data?.role,
-    });
+      const res = await axiosInstance.get('/api/auth/session-login', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-    console.log(res);
+      setSessionAuth({
+        name: res?.data?.data?.name,
+        role: res?.data?.data?.role,
+      });
+    } catch (error) {
+      router.replace('/login');
+    }
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      onAuthSessionLogin();
-    }, 2000);
-  }, []);
+    if (!hasHydrated) return;
 
-  if (!token && !name && !role) return <h1>Loading...</h1>;
+    onAuthSessionLogin();
+  }, [token, pathname, hasHydrated]);
+
+  if (!hasHydrated) return <h1>Loading...</h1>;
 
   return <>{children}</>;
 }

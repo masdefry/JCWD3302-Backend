@@ -24,7 +24,7 @@ const EmployeeHR = [
 ];
 
 async function main() {
-  // await prisma.shift.createMany({ data: Shifts });
+  await prisma.shift.createMany({ data: Shifts });
 
   await prisma.employee.createMany({ data: EmployeeHR });
 }

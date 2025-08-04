@@ -27,36 +27,21 @@ model Employee {
   role          Role
   shift         Shift      @relation(fields: [shiftId], references: [id])
   shiftId       Int
-  leavesRequested   Leave[] @relation("LeaveRequested")
-  leavesApproved    Leave[] @relation("LeaveApproved")
-  attendances    Attendance[]
+
+  attendances       Attendance[]
+
+  timeOffRequested  TimeOff[] @relation("RequestEmployee")
+  timeOffApproved   TimeOff[] @relation("ApproveEmployee") 
+
+  @@map("employees")
 }
+
 
 model Shift {
   id         Int        @id @default(autoincrement())
   shiftStart String
   shiftEnd   String
   employees  Employee[]
-}
-
-model Leave {
-  id                  Int        @id @default(autoincrement())
-  startDate           DateTime
-  endDate             DateTime
-  status              Status
-  employeeReq         Employee   @relation("LeaveRequested", fields: [employeeReqId], references: [id])
-  employeeReqId       String
-  employeeApproval    Employee   @relation("LeaveApproved", fields: [employeeApprovalId], references: [id])
-  employeeApprovalId  String
-  leaveType           LeaveType  @relation(fields: [leaveTypeId], references: [id])
-  leaveTypeId         Int
-  description         String
-}
-
-model LeaveType {
-  id     Int     @id @default(autoincrement())
-  name   String
-  leaves Leave[]
 }
 
 model Attendance {
@@ -85,6 +70,14 @@ model TimeOff{
   timeOffType TimeOffType
   reason String 
   date  DateTime  @db.Date
+  status Status
+
+  requestById String
+  requestEmployee Employee @relation("RequestEmployee", fields: [requestById], references: [id])
+
+  approvedById String? 
+  approveEmployee Employee? @relation("ApproveEmployee", fields: [approvedById], references: [id])
+
 
   timeoff_evidence TimeOffEvidence[]
 
