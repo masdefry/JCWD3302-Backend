@@ -1,24 +1,22 @@
 import express, { Express, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import { AppError } from './utils/app.error';
+import { logger } from './utils/logger';
+import router from './routers/main.router';
+import { expiryTransactionSchedule } from './jobs/cron/expiry.transaction.schedule';
 
 const app: Express = express();
-app.use(express.json());
+const port = 5000;
 app.use(
   express.urlencoded({
     extended: true,
   })
 );
 app.use(cors());
+app.use(express.json());
 
-app.get('/api', (req: Request, res: Response) => {
-  return res.status(200).json({
-    success: true,
-    message: 'success request',
-  });
-});
-
-const port = 5000;
+expiryTransactionSchedule();
+app.use(router);
 
 app.use((error: any, req: Request, res: Response, __: NextFunction) => {
   const statusCode =
@@ -32,6 +30,17 @@ app.use((error: any, req: Request, res: Response, __: NextFunction) => {
         error.name === 'TokenExpiredError' ||
         error.name === 'JsonWebTokenError'
       : 'Internal Server Error';
+
+  logger.error(`[${req?.method}]${req?.url} - ${message}`, {
+    statusCode,
+    name: error.name,
+    stack: error.stack,
+    body: req.body,
+    params: req.params,
+    query: req.query,
+    headers: req.headers,
+  });
+
   res.status(statusCode).json({
     success: false,
     message: message,
